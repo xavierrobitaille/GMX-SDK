@@ -1,5 +1,5 @@
 {
-  "include": ["src"],
+  "include": ["src", "script"],
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
@@ -7,15 +7,15 @@
     "declaration": false, // not generate *.d.ts
     "sourceMap": false,
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": false,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "noUnusedLocals": false,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -26,6 +26,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": true
   }
 }

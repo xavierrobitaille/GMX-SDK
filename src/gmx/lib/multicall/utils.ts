@@ -21,7 +21,8 @@ export async function executeMulticall(
 ) {
   const multicall = await Multicall.getInstance(chainId);
   try {
-    console.log('start multicall', Object.keys(request));
+    // xr commented out
+    // console.log('start multicall', Object.keys(request));
     return multicall?.call(request, MAX_TIMEOUT)
   } catch (e) {
     console.error("multicall.call error", e)
