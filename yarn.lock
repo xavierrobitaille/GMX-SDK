@@ -5550,10 +5550,9 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-ffpublic@^1.0.3:
+"ffpublic@file:../ff-public":
   version "1.0.3"
-  resolved "https://registry.npmjs.org/ffpublic/-/ffpublic-1.0.3.tgz"
-  integrity sha512-DaS5dK2N7EYumKrh86g1kaVjwppc3dIB6lpjRtIuyVVPlkioC8v8acQCHHC3MtrZC05tOsrJFSMm5G+C3keg8A==
+  resolved "file:../ff-public"
 
 figures@^3.0.0:
   version "3.2.0"
