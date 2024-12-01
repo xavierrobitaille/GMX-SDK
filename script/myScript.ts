@@ -5,15 +5,15 @@ import { usePositionsInfo } from '../src/gmx/domain/synthetics/positions'
 
 import { ethers } from 'ethers'
 
-ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.OFF)
+// Use default import for CommonJS modules
+import ffpublic from 'ffpublic'
 
-// Helper function to recursively transform objects
 function toSerializable(obj: any): any {
   if (BigNumber.isBigNumber(obj)) {
-    return obj.toString() // Convert BigNumber to string
+    return obj.toString()
   }
   if (Array.isArray(obj)) {
-    return obj.map(toSerializable) // Recursively process arrays
+    return obj.map(toSerializable)
   }
   if (obj && typeof obj === 'object') {
     return Object.keys(obj).reduce((acc, key) => {
@@ -21,7 +21,7 @@ function toSerializable(obj: any): any {
       return acc
     }, {} as Record<string, any>)
   }
-  return obj // Return primitive values as-is
+  return obj
 }
 
 console.warn = () => {}
@@ -39,10 +39,11 @@ async function main() {
       showPnlInLeverage: false
     })
 
-    // Serialize positions
     const serializablePositions = toSerializable(positions.positionsInfoData)
 
     console.log(JSON.stringify(serializablePositions, null, 2))
+    ffpublic.ff()
+
     return
   } catch (error) {
     console.error('Error:', error)
@@ -51,3 +52,5 @@ async function main() {
 }
 
 main()
+  .then(() => process.exit(0))
+  .catch(() => process.exit(1))

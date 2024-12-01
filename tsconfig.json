@@ -2,7 +2,7 @@
   "include": ["src", "script"],
   "compilerOptions": {
     "target": "ES6",
-    "module": "CommonJS",
+    "module": "ESNext",
     "importHelpers": false,
     "declaration": false, // not generate *.d.ts
     "sourceMap": false,
