@@ -36,7 +36,7 @@
     "@uniswap/v3-core": "1.0.0",
     "@uniswap/v3-periphery": "^1.1.1",
     "@uniswap/v3-staker": "1.0.0",
-    "ffpublic": "^1.0.3",
+    "ffpublic": "^1.0.5",
     "graphql-request": "^6.1.0",
     "jsbi": "^4.3.0",
     "lodash.keyby": "^4.6.0",
