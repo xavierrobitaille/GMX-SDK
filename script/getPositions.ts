@@ -8,7 +8,7 @@ import { ethers } from 'ethers'
 import ff from 'ffpublic'
 import { writeFile } from 'fs/promises'
 
-const HARDCODED_GMX_POSITION = {
+const HARDCODED_GMX_POSITION = ({
   '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF:0x47c031236e19d024b42f8AE6780E44A573170703:0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f:false': {
     key:
       '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF:0x47c031236e19d024b42f8AE6780E44A573170703:0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f:false',
@@ -658,17 +658,16 @@ const HARDCODED_GMX_POSITION = {
     pendingFundingFeesUsd: '33317699688880000000000000000000',
     pendingClaimableFundingFeesUsd: '68453327497600000000000000000000'
   }
+} as unknown) as {
+  marketInfo: {
+    longToken: {
+      decimals: number
+      prices: { minPrice: string }
+    }
+  }
+  claimableLongTokenAmount: string
+  pendingClaimableFundingFeesUsd: string
 }
-//  as unknown) as {
-//   marketInfo: {
-//     longToken: {
-//       decimals: number
-//       prices: { minPrice: string }
-//     }
-//   }
-//   claimableLongTokenAmount: string
-//   pendingClaimableFundingFeesUsd: string
-// }
 
 function toSerializable(obj: any): any {
   if (BigNumber.isBigNumber(obj)) {
@@ -713,7 +712,7 @@ async function main() {
     const ffJson = { accounts: [] }
 
     // Iterate over positionsInfoData
-    Object.entries(positionsInfoData /* HARDCODED_GMX_POSITION */).forEach(([key, position]) => {
+    Object.entries(positionsInfoData).forEach(([key, position]) => {
       console.log('pos')
       // Type assertion for position
       const pos = position
