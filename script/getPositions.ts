@@ -691,15 +691,15 @@ async function main() {
   try {
     const chainId = 42161
     const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
-    // const markets = await useMarketsInfo(chainId, account)
+    const markets = await useMarketsInfo(chainId, account)
 
-    // const { positionsInfoData } = await usePositionsInfo(chainId, {
-    //   account: account,
-    //   marketsInfoData: markets.marketsInfoData,
-    //   tokensData: markets.tokensData,
-    //   showPnlInLeverage: false
-    // })
-    const positionsInfoData = HARDCODED_GMX_POSITION
+    const { positionsInfoData } = await usePositionsInfo(chainId, {
+      account: account,
+      marketsInfoData: markets.marketsInfoData,
+      tokensData: markets.tokensData,
+      showPnlInLeverage: false
+    })
+    // const positionsInfoData = HARDCODED_GMX_POSITION
 
     const serializablePositions = toSerializable(positionsInfoData)
 
