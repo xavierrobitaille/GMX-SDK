@@ -6,7 +6,7 @@ import { usePositionsInfo } from '../src/gmx/domain/synthetics/positions'
 import { ethers } from 'ethers'
 
 // Use default import for CommonJS modules
-import ffpublic from 'ffpublic'
+import ff from 'ffpublic'
 
 const gmxPositionsInfo = {
   '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF:0x47c031236e19d024b42f8AE6780E44A573170703:0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f:false': {
@@ -695,7 +695,7 @@ async function main() {
 
     // console.log(JSON.stringify(serializablePositions, null, 2))
 
-    ffpublic.ff()
+    ff.ff()
 
     const paymentDate = new Date()
 
@@ -726,7 +726,7 @@ async function main() {
         const externalSymbol = pos.marketInfo.name + ' ' + pos.collateralToken.symbol
         const interest = Number(pos.pendingClaimableFundingFeesUsd) / 10 ** 30
         const symbol = 'BTC.USD-PERP:CRYP'
-        const ffInterest = ffpublic.ffInterest({
+        const ffInterest = ff.ffInterest({
           externalSymbol,
           paymentDate,
           symbol,

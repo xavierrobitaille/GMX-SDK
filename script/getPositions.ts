@@ -5,10 +5,10 @@ import { usePositionsInfo } from '../src/gmx/domain/synthetics/positions'
 
 import { ethers } from 'ethers'
 
-// Use default import for CommonJS modules
-import ffpublic from 'ffpublic'
+import ff from 'ffpublic'
+import { writeFile } from 'fs/promises'
 
-const gmxPositionsInfo = {
+const HARDCODED_GMX_POSITION = {
   '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF:0x47c031236e19d024b42f8AE6780E44A573170703:0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f:false': {
     key:
       '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF:0x47c031236e19d024b42f8AE6780E44A573170703:0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f:false',
@@ -659,6 +659,16 @@ const gmxPositionsInfo = {
     pendingClaimableFundingFeesUsd: '68453327497600000000000000000000'
   }
 }
+//  as unknown) as {
+//   marketInfo: {
+//     longToken: {
+//       decimals: number
+//       prices: { minPrice: string }
+//     }
+//   }
+//   claimableLongTokenAmount: string
+//   pendingClaimableFundingFeesUsd: string
+// }
 
 function toSerializable(obj: any): any {
   if (BigNumber.isBigNumber(obj)) {
@@ -680,69 +690,65 @@ console.warn = () => {}
 
 async function main() {
   try {
-    // const chainId = 42161
-    // const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
+    const chainId = 42161
+    const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
     // const markets = await useMarketsInfo(chainId, account)
 
-    // const positions = await usePositionsInfo(chainId, {
+    // const { positionsInfoData } = await usePositionsInfo(chainId, {
     //   account: account,
     //   marketsInfoData: markets.marketsInfoData,
     //   tokensData: markets.tokensData,
     //   showPnlInLeverage: false
     // })
+    const positionsInfoData = HARDCODED_GMX_POSITION
 
-    // const serializablePositions = toSerializable(positions.positionsInfoData)
+    const serializablePositions = toSerializable(positionsInfoData)
 
-    // console.log(JSON.stringify(serializablePositions, null, 2))
+    console.log(JSON.stringify(serializablePositions, null, 2))
 
-    ffpublic.ff()
+    ff.ff()
 
-    const paymentDate = new Date()
+    // const now = new Date()
+    const now = new Date('2024-12-01T00:00:00Z')
+    const ffJson = { accounts: [] }
 
     // Iterate over positionsInfoData
-    Object.entries(gmxPositionsInfo).forEach(([key, position]) => {
+    Object.entries(positionsInfoData /* HARDCODED_GMX_POSITION */).forEach(([key, position]) => {
+      console.log('pos')
       // Type assertion for position
-      const pos = position as {
-        marketInfo: {
-          longToken: {
-            decimals: number
-            prices: { minPrice: string }
-          }
-        }
-        claimableLongTokenAmount: string
-        pendingClaimableFundingFeesUsd: string
-      }
+      const pos = position
 
       const longToken = pos.marketInfo?.longToken
       const claimableLongTokenAmount = pos.claimableLongTokenAmount
 
       if (longToken && claimableLongTokenAmount && longToken.prices.minPrice) {
-        // console.log(
-        //   `Position Key: ${key}, Pending Claimable Funding Fees (Long USD): ${Number(
-        //     pos.pendingClaimableFundingFeesUsd
-        //   ) /
-        //     10 ** 30}`
-        // )
         const externalSymbol = pos.marketInfo.name + ' ' + pos.collateralToken.symbol
         const interest = Number(pos.pendingClaimableFundingFeesUsd) / 10 ** 30
         const symbol = 'BTC.USD-PERP:CRYP'
-        const ffInterest = ffpublic.ffInterest({
-          externalSymbol,
-          paymentDate,
-          symbol,
-          interest,
+        const ffWireIn = ff.ffWireInSymbol({
+          dateStr: now.toISOString(),
+          symbol: pos.collateralToken.symbol === 'BTC' ? 'BTC.USD:CRYP' : 'USDT',
+          amount:
+            pos.collateralToken.symbol === 'BTC' ? pos.collateralAmount / 10 ** 8 : pos.collateralAmount / 10 ** 6,
           description: key,
           currency: 'USDT',
           symbolCurrency: 'USDT',
           label: externalSymbol,
           assetType: 'CRYPTO'
         })
-        console.log(ffInterest)
-        console.log()
+        ffJson.accounts.push({ name: externalSymbol, transactions: [ffWireIn] })
+        console.log('#################################')
+        console.log(ffWireIn)
+        console.log(ffJson)
+        console.log('#################################')
       } else {
         console.log(`Position Key: ${key} is missing required data for calculation.`)
       }
     })
+
+    // Write the ffJson object to a file
+    await writeFile('ffJson.json', JSON.stringify(ffJson, null, 2), 'utf8')
+    console.log('JSON has been successfully written to ffJson.json')
 
     return
   } catch (error) {

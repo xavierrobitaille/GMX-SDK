@@ -14,4 +14,5 @@ npm install ffpublic@latest --force
 
 npm link ffpublic --force
 
-npx tsx script/myScript.ts
+npx tsx script/getClaimableFundingFees.ts
+npx tsx getPositions.ts
