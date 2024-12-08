@@ -5784,10 +5784,10 @@ fdir@^6.4.2:
   resolved "https://registry.npmjs.org/fdir/-/fdir-6.4.2.tgz"
   integrity sha512-KnhMXsKSPZlAhp7+IjUkRZKPb4fUyccpDrdFXbi4QL1qkmFh9kVY09Yox+n4MaOb3lHZ1Tv829C3oaaXoMYPDQ==
 
-ffpublic@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/ffpublic/-/ffpublic-1.0.5.tgz"
-  integrity sha512-LNZKIP6K9Raz/gSxds9zZiyCOt7KGQVf6fx6EjkTRRve8wxuNwAMAbAziQtb5NqXjcvP21keyCl7AKrw8ONZQw==
+ffpublic@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/ffpublic/-/ffpublic-1.0.6.tgz"
+  integrity sha512-HB/ZH55l/ZpQhqI6ps+fT5kuS/gz9B1qylskr7FGk/svR1tcxOYyR1KEvBZ4ZnpfzkrQs/ROtSyEeWMNVFyjzQ==
 
 figures@^3.0.0:
   version "3.2.0"
