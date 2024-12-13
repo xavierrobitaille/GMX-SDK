@@ -1,0 +1,187 @@
+{
+  "accounts": [
+    {
+      "name": "BTC/USD [BTC-USDC] BTC",
+      "transactions": [
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": -1.916555605581572,
+          "label": "externalSymbol",
+          "currency": "USDT",
+          "description": "Borrowing Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": -8.542207246893069,
+          "label": "Closing Fees",
+          "currency": "USDT",
+          "description": "Closing Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": 0,
+          "label": "Negative Funding Fees",
+          "currency": "USDT",
+          "description": "Funding Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": 26.493726240321053,
+          "label": "Positive Funding Fees",
+          "currency": "USDT",
+          "description": "Claimable Funding Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        }
+      ]
+    },
+    {
+      "name": "BTC/USD [BTC-USDC] USDC",
+      "transactions": [
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": -0.08278106339324685,
+          "label": "externalSymbol",
+          "currency": "USDT",
+          "description": "Borrowing Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": -0.009843986000244014,
+          "label": "Closing Fees",
+          "currency": "USDT",
+          "description": "Closing Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": 0,
+          "label": "Negative Funding Fees",
+          "currency": "USDT",
+          "description": "Funding Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": 0.35532705323142905,
+          "label": "Positive Funding Fees",
+          "currency": "USDT",
+          "description": "Claimable Funding Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        }
+      ]
+    },
+    {
+      "name": "BTC/USD [BTC] BTC",
+      "transactions": [
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": -20.618976170668507,
+          "label": "externalSymbol",
+          "currency": "USDT",
+          "description": "Borrowing Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": -2.959785343161974,
+          "label": "Closing Fees",
+          "currency": "USDT",
+          "description": "Closing Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": -53.484099718399996,
+          "label": "Negative Funding Fees",
+          "currency": "USDT",
+          "description": "Funding Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        },
+        {
+          "transactionDate": "2024-12-01T00:00:00.000Z",
+          "settlementDate": "2024-12-01T00:00:00.000Z",
+          "processingDate": "2024-12-01T00:00:00.000Z",
+          "symbol": "USDT",
+          "symbolCurrency": "USDT",
+          "type": "FEE",
+          "amount": 0,
+          "netAmount": 108.861973376,
+          "label": "Positive Funding Fees",
+          "currency": "USDT",
+          "description": "Claimable Funding Fees (Pending as of Initial Upload)",
+          "assetType": "CRYPTO"
+        }
+      ]
+    }
+  ]
+}

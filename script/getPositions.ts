@@ -68,7 +68,6 @@ async function main() {
       if (longToken && claimableLongTokenAmount && longToken.prices.minPrice) {
         const externalSymbol = pos.marketInfo.name + ' ' + pos.collateralToken.symbol
         const interest = Number(pos.pendingClaimableFundingFeesUsd) / 10 ** 30
-        const symbol = 'BTC.USD-PERP:CRYP'
         const ffWireInCollateral = ff.ffWireInSymbol({
           dateStr: positionDate.toISOString(),
           symbol: pos.collateralToken.symbol === 'BTC' ? 'BTC.USD:CRYP' : 'USDT',
@@ -99,7 +98,7 @@ async function main() {
             description: 'Borrowing Fees (Pending as of Initial Upload)',
             currency: 'USDT',
             symbolCurrency: 'USDT',
-            label: 'externalSymbol',
+            label: 'Borrowing Fees',
             assetType: 'CRYPTO'
           },
           { forceEodUtc: false }

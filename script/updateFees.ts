@@ -1,3 +1,4 @@
+import { writeFile } from 'fs/promises'
 import { BigNumber } from 'ethers'
 
 import { useMarketsInfo } from '../src/gmx/domain/synthetics/markets'
@@ -6,9 +7,13 @@ import { usePositionsInfo } from '../src/gmx/domain/synthetics/positions'
 import { ethers } from 'ethers'
 
 import ff from 'ffpublic'
-//import HARDCODED_GMX_POSITION from '../fixtures/20241201.json'
-import HARDCODED_GMX_POSITION from '../fixtures/20241208_1710.json'
-import { writeFile } from 'fs/promises'
+
+const USE_HARDCODED_GMX = false
+import {
+  timestamp as HARDCODED_TIMESTAMP,
+  positionsInfoData as HARDCODED_GMX_POSITION
+} from '../fixtures/20241208_1710.json'
+import { timestamp as gmxLastTimstamp, positionsInfoData as gmxLast } from '../fixtures/20241208_1710.json'
 
 function toSerializable(obj: any): any {
   if (BigNumber.isBigNumber(obj)) {
@@ -33,8 +38,8 @@ async function main() {
     const chainId = 42161
     const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
     let positionsInfoData = HARDCODED_GMX_POSITION
-    const useHardcodedGmx = true
-    if (!useHardcodedGmx) {
+    let feesDateStr = HARDCODED_TIMESTAMP
+    if (!USE_HARDCODED_GMX) {
       const markets = await useMarketsInfo(chainId, account)
 
       const res = await usePositionsInfo(chainId, {
@@ -44,6 +49,7 @@ async function main() {
         showPnlInLeverage: false
       })
       positionsInfoData = res.positionsInfoData
+      feesDateStr = new Date().toISOString()
     }
 
     const serializablePositions = toSerializable(positionsInfoData)
@@ -52,9 +58,7 @@ async function main() {
 
     ff.ff()
 
-    // const now = new Date()
-    const positionDate = new Date('2024-12-01T00:00:00Z')
-    const ffJson = { accounts: [] }
+    const ffUpdatedFees = { accounts: [] }
 
     // Iterate over positionsInfoData
     Object.entries(positionsInfoData).forEach(([key, position]) => {
@@ -69,33 +73,12 @@ async function main() {
         const externalSymbol = pos.marketInfo.name + ' ' + pos.collateralToken.symbol
         const interest = Number(pos.pendingClaimableFundingFeesUsd) / 10 ** 30
         const symbol = 'BTC.USD-PERP:CRYP'
-        const ffWireInCollateral = ff.ffWireInSymbol({
-          dateStr: positionDate.toISOString(),
-          symbol: pos.collateralToken.symbol === 'BTC' ? 'BTC.USD:CRYP' : 'USDT',
-          amount: Number(pos.collateralAmount) / 10 ** pos.collateralToken.decimals,
-          description: key,
-          currency: 'USDT',
-          symbolCurrency: 'USDT',
-          label: externalSymbol,
-          assetType: 'CRYPTO'
-        })
-        const ffWireInFutures = ff.ffFuturesTrade({
-          amount: -Number(pos.sizeInTokens) / 10 ** pos.marketInfo.indexToken.decimals,
-          assetType: 'CRYPTO',
-          currency: 'USDT',
-          dateStr: positionDate.toISOString(),
-          description: 'Off market futures trade at initial upload',
-          instruction: 'SELL',
-          label: externalSymbol,
-          price: Number(pos.entryPrice) / 10 ** 30,
-          symbol: 'BTC.USD-PERP:CRYP',
-          symbolCurrency: 'USDT'
-        })
-        const ffWireOutPendingBorrowingFees = ff.ffWireOutCurrency(
+        let delta = Number(pos.pendingBorrowingFeesUsd) - Number(gmxLast[key].pendingBorrowingFeesUsd)
+        const ffIncrementBorrowingFees = ff.ffFee(
           {
-            dateStr: positionDate.toISOString(),
+            dateStr: feesDateStr,
             symbol: 'USDT',
-            netAmount: -Number(pos.pendingBorrowingFeesUsd) / 10 ** 30,
+            netAmount: delta / 10 ** 30,
             description: 'Borrowing Fees (Pending as of Initial Upload)',
             currency: 'USDT',
             symbolCurrency: 'USDT',
@@ -104,12 +87,13 @@ async function main() {
           },
           { forceEodUtc: false }
         )
-        const ffWireOutClosingFee = ff.ffWireOutCurrency(
+        delta = Number(pos.closingFeeUsd) - Number(gmxLast[key].closingFeeUsd)
+        const ffIncrementClosingFee = ff.ffFee(
           {
-            dateStr: positionDate.toISOString(),
+            dateStr: feesDateStr,
             symbol: 'USDT',
-            netAmount: -Number(pos.closingFeeUsd) / 10 ** 30,
-            description: 'Closing Fees (Pending as of Initial Upload)',
+            netAmount: delta / 10 ** 30,
+            description: 'Closing Fees',
             currency: 'USDT',
             symbolCurrency: 'USDT',
             label: 'Closing Fees',
@@ -117,12 +101,13 @@ async function main() {
           },
           { forceEodUtc: false }
         )
-        const ffWireOutPendingFundingFees = ff.ffWireOutCurrency(
+        delta = Number(pos.pendingFundingFeesUsd) - Number(gmxLast[key].pendingFundingFeesUsd)
+        const ffIncrementFundingFees = ff.ffFee(
           {
-            dateStr: positionDate.toISOString(),
+            dateStr: feesDateStr,
             symbol: 'USDT',
-            netAmount: -Number(pos.pendingFundingFeesUsd) / 10 ** 30,
-            description: 'Funding Fees (Pending as of Initial Upload)',
+            netAmount: -delta / 10 ** 30,
+            description: 'Funding Fees',
             currency: 'USDT',
             symbolCurrency: 'USDT',
             label: 'Negative Funding Fees',
@@ -130,12 +115,13 @@ async function main() {
           },
           { forceEodUtc: false }
         )
-        const ffWireInPendingClaimableFundingFees = ff.ffWireInCurrency(
+        delta = Number(pos.pendingClaimableFundingFeesUsd) - Number(gmxLast[key].pendingClaimableFundingFeesUsd)
+        const ffIncrementClaimableFundingFees = ff.ffInterest(
           {
-            dateStr: positionDate.toISOString(),
+            dateStr: feesDateStr,
             symbol: 'USDT',
-            netAmount: Number(pos.pendingClaimableFundingFeesUsd) / 10 ** 30,
-            description: 'Claimable Funding Fees (Pending as of Initial Upload)',
+            netAmount: delta / 10 ** 30,
+            description: 'Claimable Funding Fees',
             currency: 'USDT',
             symbolCurrency: 'USDT',
             label: 'Positive Funding Fees',
@@ -144,31 +130,28 @@ async function main() {
           { forceEodUtc: false }
         )
 
-        ffJson.accounts.push({
+        ffUpdatedFees.accounts.push({
           name: externalSymbol,
           transactions: [
-            ffWireInCollateral,
-            ffWireInFutures,
-            ffWireOutPendingBorrowingFees,
-            ffWireOutClosingFee,
-            ffWireOutPendingFundingFees,
-            ffWireInPendingClaimableFundingFees
+            ffIncrementBorrowingFees,
+            ffIncrementClosingFee,
+            ffIncrementFundingFees,
+            ffIncrementClaimableFundingFees
           ]
         })
         console.log('#################################')
-        console.log(ffWireInCollateral)
-        console.log(ffJson)
+        console.log(ffUpdatedFees)
         console.log('#################################')
       } else {
         console.log(`Position Key: ${key} is missing required data for calculation.`)
       }
     })
 
-    // Write the ffJson object to a file
-    await writeFile('ffJson.json', JSON.stringify(ffJson, null, 2), 'utf8')
-    console.log('JSON has been successfully written to ffJson.json')
+    // Write the ffUpdatedFees object to a file
+    await writeFile('ffUpdatedFees.json', JSON.stringify(ffUpdatedFees, null, 2), 'utf8')
+    console.log('JSON has been successfully written to ffUpdatedFees.json')
 
-    if (!useHardcodedGmx) {
+    if (!USE_HARDCODED_GMX) {
       const now = new Date()
       const formattedDate = now
         .toISOString()
