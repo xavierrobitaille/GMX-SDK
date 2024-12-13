@@ -3,10 +3,23 @@ import { BigNumber } from 'ethers'
 
 import { useMarketsInfo } from '../src/gmx/domain/synthetics/markets'
 import { usePositionsInfo } from '../src/gmx/domain/synthetics/positions'
-
 import { ethers } from 'ethers'
-
 import ff from 'ffpublic'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
+
+const argv = yargs(hideBin(process.argv))
+  .option('lastFile', {
+    type: 'string',
+    description: 'Path to the last positions info data file',
+    demandOption: false
+  })
+  .option('currentFile', {
+    type: 'string',
+    description: 'Path to the current positions info data file',
+    demandOption: false
+  })
+  .help().argv
 
 const USE_HARDCODED_GMX = false
 import {
@@ -39,6 +52,19 @@ async function main() {
     const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
     let positionsInfoData = HARDCODED_GMX_POSITION
     let feesDateStr = HARDCODED_TIMESTAMP
+
+    if (argv.lastFile) {
+      const lastPosData = require(argv.lastFile)
+      positionsInfoData = lastPosData.positionsInfoData
+      feesDateStr = lastPosData.timestamp
+    }
+
+    if (argv.currentFile) {
+      const currentPosData = require(argv.currentFile)
+      positionsInfoData = currentPosData.positionsInfoData
+      feesDateStr = currentPosData.timestamp
+    }
+
     if (!USE_HARDCODED_GMX) {
       const markets = await useMarketsInfo(chainId, account)
 

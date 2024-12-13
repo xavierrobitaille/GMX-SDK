@@ -5784,9 +5784,10 @@ fdir@^6.4.2:
   resolved "https://registry.npmjs.org/fdir/-/fdir-6.4.2.tgz"
   integrity sha512-KnhMXsKSPZlAhp7+IjUkRZKPb4fUyccpDrdFXbi4QL1qkmFh9kVY09Yox+n4MaOb3lHZ1Tv829C3oaaXoMYPDQ==
 
-"ffpublic@file:../ff-public":
+ffpublic@^1.0.6:
   version "1.0.6"
-  resolved "file:../ff-public"
+  resolved "https://registry.npmjs.org/ffpublic/-/ffpublic-1.0.6.tgz"
+  integrity sha512-HB/ZH55l/ZpQhqI6ps+fT5kuS/gz9B1qylskr7FGk/svR1tcxOYyR1KEvBZ4ZnpfzkrQs/ROtSyEeWMNVFyjzQ==
 
 figures@^3.0.0:
   version "3.2.0"
@@ -11505,7 +11506,7 @@ yargs@^16.2.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-yargs@^17.3.1:
+yargs@^17.3.1, yargs@^17.7.2:
   version "17.7.2"
   resolved "https://registry.npmjs.org/yargs/-/yargs-17.7.2.tgz"
   integrity sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==
