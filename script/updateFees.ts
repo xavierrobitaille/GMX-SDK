@@ -7,6 +7,7 @@ import { ethers } from 'ethers'
 import ff from 'ffpublic'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import path from 'path'
 
 const argv = yargs(hideBin(process.argv))
   .option('lastFile', {
@@ -21,12 +22,35 @@ const argv = yargs(hideBin(process.argv))
   })
   .help().argv
 
-const USE_HARDCODED_GMX = false
+const USE_HARDCODED_GMX = true
 import {
   timestamp as HARDCODED_TIMESTAMP,
   positionsInfoData as HARDCODED_GMX_POSITION
 } from '../fixtures/20241208_1710.json'
-import { timestamp as gmxLastTimstamp, positionsInfoData as gmxLast } from '../fixtures/20241208_1710.json'
+
+let gmxLastTimstamp = HARDCODED_TIMESTAMP
+let gmxLast = HARDCODED_GMX_POSITION
+
+if (argv.lastFile) {
+  const lastFilePath = path.resolve(process.cwd(), argv.lastFile)
+  // const lastFilePath = (__dirname, '..', argv.lastFile)
+  const lastFileData = require(lastFilePath)
+  gmxLastTimstamp = lastFileData.timestamp
+  gmxLast = lastFileData.positionsInfoData
+}
+
+let gmxCurrentTimstamp = null
+let gmxCurrent = null
+let positionsInfoData = null
+let feesDateStr = null
+if (argv.currentFile) {
+  const currentFilePath = path.resolve(process.cwd(), argv.currentFile)
+  // const currentPosData = require(process.cwd(), argv.currentFile)
+  // const currentFilePath = path.resolve(__dirname, '..', argv.currentFile)
+  const currentPosData = require(currentFilePath)
+  positionsInfoData = currentPosData.positionsInfoData
+  feesDateStr = currentPosData.timestamp
+}
 
 function toSerializable(obj: any): any {
   if (BigNumber.isBigNumber(obj)) {
@@ -50,22 +74,10 @@ async function main() {
   try {
     const chainId = 42161
     const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
-    let positionsInfoData = HARDCODED_GMX_POSITION
-    let feesDateStr = HARDCODED_TIMESTAMP
+    // let positionsInfoData = HARDCODED_GMX_POSITION
+    // let feesDateStr = HARDCODED_TIMESTAMP
 
-    if (argv.lastFile) {
-      const lastPosData = require(argv.lastFile)
-      positionsInfoData = lastPosData.positionsInfoData
-      feesDateStr = lastPosData.timestamp
-    }
-
-    if (argv.currentFile) {
-      const currentPosData = require(argv.currentFile)
-      positionsInfoData = currentPosData.positionsInfoData
-      feesDateStr = currentPosData.timestamp
-    }
-
-    if (!USE_HARDCODED_GMX) {
+    if (!positionsInfoData) {
       const markets = await useMarketsInfo(chainId, account)
 
       const res = await usePositionsInfo(chainId, {

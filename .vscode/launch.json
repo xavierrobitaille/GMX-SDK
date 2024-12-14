@@ -22,7 +22,13 @@
       "name": "updateFees.ts",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["tsx"],
-      "args": ["script/updateFees.ts.ts"],
+      "args": [
+        "script/updateFees.ts",
+        "--lastFile",
+        "fixtures/20241212_1137.json",
+        "--currentFile",
+        "fixtures/20241213_0727.json"
+      ],
       "cwd": "${workspaceFolder}",
       "sourceMaps": true,
       "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
