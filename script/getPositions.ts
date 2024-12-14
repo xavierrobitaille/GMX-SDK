@@ -7,7 +7,8 @@ import { ethers } from 'ethers'
 
 import ff from 'ffpublic'
 //import HARDCODED_GMX_POSITION from '../fixtures/20241201.json'
-import HARDCODED_GMX_POSITION from '../fixtures/20241208_1710.json'
+// import HARDCODED_GMX_POSITION from '../fixtures/20241208_1710.json'
+const HARDCODED_GMX_POSITION = null
 import { writeFile } from 'fs/promises'
 
 function toSerializable(obj: any): any {
@@ -33,8 +34,7 @@ async function main() {
     const chainId = 42161
     const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
     let positionsInfoData = HARDCODED_GMX_POSITION
-    const useHardcodedGmx = true
-    if (!useHardcodedGmx) {
+    if (!HARDCODED_GMX_POSITION) {
       const markets = await useMarketsInfo(chainId, account)
 
       const res = await usePositionsInfo(chainId, {
@@ -167,7 +167,7 @@ async function main() {
     await writeFile('ffJson.json', JSON.stringify(ffJson, null, 2), 'utf8')
     console.log('JSON has been successfully written to ffJson.json')
 
-    if (!useHardcodedGmx) {
+    if (!HARDCODED_GMX_POSITION) {
       const now = new Date()
       const formattedDate = now
         .toISOString()
@@ -179,7 +179,14 @@ async function main() {
         .replace(':', '')
       await writeFile(
         `fixtures/${formattedDate}_${formattedTime}.json`,
-        JSON.stringify(serializablePositions, null, 2),
+        JSON.stringify(
+          {
+            timestamp: now,
+            positionsInfoData: serializablePositions
+          },
+          null,
+          2
+        ),
         'utf8'
       )
     }
