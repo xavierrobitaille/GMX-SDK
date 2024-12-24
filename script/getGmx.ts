@@ -32,7 +32,8 @@ async function main() {
   for (const mixedCaseAccount of mixedCaseAccounts) {
     try {
       const chainId = 42161
-      const account = utils.getAddress(mixedCaseAccount.toLowerCase())
+      const lowerCaseAccount = mixedCaseAccount.toLowerCase()
+      const account = utils.getAddress(lowerCaseAccount)
       console.error('processing account', account)
       const markets = await useMarketsInfo(chainId, account)
 
@@ -55,9 +56,9 @@ async function main() {
         .toTimeString()
         .slice(0, 5)
         .replace(':', '')
-      await mkdir(`fixtures/${account}`, { recursive: true })
+      await mkdir(`fixtures/${lowerCaseAccount}`, { recursive: true })
       await writeFile(
-        `fixtures/${account}/${formattedDate}_${formattedTime}.json`,
+        `fixtures/${lowerCaseAccount}/${formattedDate}_${formattedTime}.json`,
         JSON.stringify(
           {
             timestamp: now,
