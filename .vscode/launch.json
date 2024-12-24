@@ -7,6 +7,18 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "getGmx.ts",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["tsx"],
+      "args": ["script/getGmx.ts"],
+      "cwd": "${workspaceFolder}",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+      "outFiles": ["${workspaceFolder}/**/*.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "getPositions",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["tsx"],

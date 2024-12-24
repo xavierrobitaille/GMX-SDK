@@ -1,5 +1,4 @@
-import { BigNumber } from 'ethers'
-
+import { BigNumber, utils } from 'ethers'
 import { useMarketsInfo } from '../src/gmx/domain/synthetics/markets'
 import { usePositionsInfo } from '../src/gmx/domain/synthetics/positions'
 
@@ -8,7 +7,7 @@ import { writeFile, mkdir } from 'fs/promises'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-const accounts = process.env.ACCOUNTS.split(',')
+const mixedCaseAccounts = process.env.ACCOUNTS.split(',')
 
 function toSerializable(obj: any): any {
   if (BigNumber.isBigNumber(obj)) {
@@ -30,11 +29,11 @@ console.log = () => {}
 console.warn = () => {}
 
 async function main() {
-  for (const account of accounts) {
+  for (const mixedCaseAccount of mixedCaseAccounts) {
     try {
       const chainId = 42161
+      const account = utils.getAddress(mixedCaseAccount.toLowerCase())
       console.error('processing account', account)
-      //const account = '0x8E1E8AA0deD409Aa6cA3E37E76239e3E3ff70BdF'
       const markets = await useMarketsInfo(chainId, account)
 
       const res = await usePositionsInfo(chainId, {
