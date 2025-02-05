@@ -82,10 +82,11 @@ export async function usePositions(
                 const { addresses, numbers, flags, data } = position;
                 const { account, market: marketAddress, collateralToken: collateralTokenAddress } = addresses;
 
-                // Empty position
-                if (BigNumber.from(numbers.increasedAtBlock).eq(0)) {
-                    return positionsMap;
-                }
+                // xr - was preventing ETH positions from feeding
+                // // Empty position
+                // if (BigNumber.from(numbers.increasedAtBlock).eq(0)) {
+                //     return positionsMap;
+                // }
 
                 // ERC55 formatted address returned by the contract
                  const positionKey = getPositionKey(account, marketAddress, collateralTokenAddress, flags.isLong);
