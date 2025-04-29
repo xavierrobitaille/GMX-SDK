@@ -193,12 +193,26 @@ export const TOKENS: { [chainId: number]: Token[] } = {
       coingeckoUrl: "https://www.coingecko.com/en/coins/xrp",
       isSynthetic: true,
     },
+    // {
+    //   name: "GMX",
+    //   symbol: "GMX",
+    //   address: getContract(ARBITRUM, "GMX"),
+    //   decimals: 18,
+    //   isPlatformToken: true,
+    // isPlatformTradingToken: true,
+    //   categories: ["defi"],
+    //   imageUrl: "https://assets.coingecko.com/coins/images/18323/small/arbit.png?1631532468",
+    //   coingeckoUrl: "https://www.coingecko.com/en/coins/gmx",
+    //   explorerUrl: "https://arbiscan.io/address/0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+    // },
     {
       name: "GMX",
       symbol: "GMX",
       address: getContract(ARBITRUM, "GMX"),
       decimals: 18,
       isPlatformToken: true,
+      // https://github.com/gmx-io/gmx-interface/blob/master/sdk/src/configs/tokens.ts
+      isPlatformTradingToken: true,
       imageUrl: "https://assets.coingecko.com/coins/images/18323/small/arbit.png?1631532468",
       coingeckoUrl: "https://www.coingecko.com/en/coins/gmx",
       explorerUrl: "https://arbiscan.io/address/0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
@@ -226,6 +240,33 @@ export const TOKENS: { [chainId: number]: Token[] } = {
       decimals: 18,
       imageUrl: "https://raw.githubusercontent.com/gmx-io/gmx-assets/main/GMX-Assets/PNG/GM_LOGO.png",
       isPlatformToken: true,
+    },
+    // https://github.com/gmx-io/gmx-interface/blob/master/sdk/src/configs/tokens.ts
+    {
+      name: "Aave",
+      symbol: "AAVE",
+      assetSymbol: "AAVE",
+      priceDecimals: 3,
+      address: "0xba5DdD1f9d7F570dc94a51479a000E3BCE967196",
+      decimals: 18,
+      // categories: ["defi"],
+      imageUrl: "https://assets.coingecko.com/coins/images/12645/standard/AAVE.png?1696512452",
+      coingeckoUrl: "https://www.coingecko.com/en/coins/aave",
+      // coingeckoSymbol: "AAVE",
+    },
+    // https://github.com/gmx-io/gmx-interface/blob/master/sdk/src/configs/tokens.ts
+    {
+      name: "Wrapped AVAX (Wormhole)",
+      symbol: "AVAX",
+      assetSymbol: "WAVAX (Wormhole)",
+      priceDecimals: 4,
+      address: "0x565609fAF65B92F7be02468acF86f8979423e514",
+      decimals: 18,
+      // categories: ["layer1"],
+      imageUrl: "https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png?1604021818",
+      coingeckoUrl: "https://www.coingecko.com/en/coins/avalanche",
+      // coingeckoSymbol: "AVAX",
+      // explorerSymbol: "WAVAX",
     },
   ],
   [AVALANCHE]: [
@@ -886,7 +927,9 @@ for (let j = 0; j < CHAIN_IDS.length; j++) {
       V1_TOKENS[chainId].push(token);
     }
 
-    if (!token.isPlatformToken && !token.isTempHidden) {
+    // https://github.com/gmx-io/gmx-interface/blob/master/sdk/src/configs/tokens.ts
+    // if (!token.isPlatformToken && !token.isTempHidden) {
+      if ((!token.isPlatformToken || (token.isPlatformToken && token.isPlatformTradingToken)) && !token.isTempHidden) {
       V2_TOKENS[chainId].push(token);
     }
   }
